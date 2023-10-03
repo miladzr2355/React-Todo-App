@@ -1,40 +1,46 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import TodoForm from './TodoForm'
 import Todo from './Todo'
-import { ITodo }from '../types/types'
-import { v4 as uuidv4 } from 'uuid'
-uuidv4();
+import { ITodo } from '../types/types'
+import { db } from '../DataAccess/Firebase'
+import { query, collection, onSnapshot, updateDoc, deleteDoc , doc } from 'firebase/firestore'
 
 const TodoContainer: React.FC = () => {
+
     const [todos, setTodos] = useState<ITodo[]>([]);
 
-    const addTodo = (todo: string) => {
-        const newTodo: ITodo = {
-          id: uuidv4(),
-          task: todo,
-          completed: false
-        };
+    useEffect(() => {
+        const q = query(collection(db, 'Todos'))
 
-        setTodos([...todos, newTodo]);
-    };
+        const unsubsribe = onSnapshot(q, (querySnapshot) => {
+            let todosList: ITodo[] = [];
 
-    const toggleComplete = (taskId: string) => {
-        setTodos(todos.map(todo => 
-            todo.id === taskId ? 
-            {...todo, completed: !todo.completed} : 
-            todo))
+            querySnapshot.forEach(doc => {
+                todosList.push({id: doc.id, task: doc.data().text, completed: doc.data().completed })
+            });
+
+            setTodos(todosList)
+        })
+
+        return () => unsubsribe();
+    }, [])
+
+    const toggleComplete = async(todo: ITodo) => {
+        await updateDoc(doc(db, 'Todos', todo.id), {
+            completed: !todo.completed
+        })
     }
 
-    const deleteTodo = (taskId: string) => {
-        setTodos(todos.filter(todo => todo.id !== taskId))
+    const deleteTodo = async(todo: ITodo) => {
+        await deleteDoc(doc(db, "Todos", todo.id));
     }
     
     return (
         <div className='TodoWrapper'>
             <h1>Plan your day!</h1>
 
-            <TodoForm addTodo={addTodo}/>
+            <TodoForm/>
             
             {
                 todos.map((todo, index) => (

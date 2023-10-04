@@ -14,11 +14,13 @@ const Todo: React.FC<TodoProps> = ({ task, toggleComplete, deleteTodo }) => {
 	return (
 		
 		<div className='Todo'>
-			<input type="checkbox" onChange={() => toggleComplete(task.id)}/>
+			<div className='TodoInner'>
+				<input className='TodoInput' type="checkbox" onChange={() => toggleComplete(task.id)}/>
 
-			<p className={`${task.completed ? 'completed' : 'incompleted'}`}>
-				{task.task}
-			</p>
+				<p className={`${task.completed ? 'completed' : 'incompleted'}`}>
+					{task.task}
+				</p>
+			</div>
 
 			<div>
 				<FontAwesomeIcon icon={faTrash} onClick={() => deleteTodo(task.id)}/>

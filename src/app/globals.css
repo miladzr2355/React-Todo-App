@@ -26,6 +26,15 @@ h1 {
   font-size: 1.75rem;
 }
 
+.TodoInner {
+  display: flex;
+  align-items: center;
+}
+
+.TodoInput {
+  margin-right: 10px;
+}
+
 .TodoWrapper {
   background: #FAF9F6;
   margin-top: 5rem;

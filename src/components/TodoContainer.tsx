@@ -43,10 +43,10 @@ const TodoContainer: React.FC = () => {
             <TodoForm/>
             
             {
-                todos.map((todo, index) => (
+                todos.map((todo) => (
                     <Todo 
                         task={todo} 
-                        key={index} 
+                        key={todo.id} 
                         toggleComplete={toggleComplete}
                         deleteTodo={deleteTodo}
                     />

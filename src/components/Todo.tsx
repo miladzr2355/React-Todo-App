@@ -5,19 +5,27 @@ import { faTrash } from '@fortawesome/free-solid-svg-icons'
 import { ITodo } from '../types/types'
 
 interface TodoProps{
-    task: ITodo;
-	toggleComplete: (todo: ITodo) => void;
-	deleteTodo: (todo: ITodo) => void;
+    task: ITodo
+	toggleComplete: (todo: ITodo) => void
+	deleteTodo: (todo: ITodo) => void
 }
 
 const Todo: React.FC<TodoProps> = ({ task, toggleComplete, deleteTodo }) => {
+	const handleComplete = () => {
+		toggleComplete(task)
+	}
+
+	const handleDeleteTodo = () => {
+		deleteTodo(task)
+	};
+
 	return (
 		<div className='Todo'>
 			<div className='TodoInner'>
 				<input 
 					className='TodoInput' 
 					type="checkbox" 
-					onChange={() => toggleComplete(task)}
+					onChange={handleComplete}
 					checked={task.completed}
 				/>
 
@@ -27,7 +35,9 @@ const Todo: React.FC<TodoProps> = ({ task, toggleComplete, deleteTodo }) => {
 			</div>
 
 			<div>
-				<FontAwesomeIcon icon={faTrash} onClick={() => deleteTodo(task)}/>
+				<button className='SubmitNewTodoBtn' onClick={handleDeleteTodo}>
+					<FontAwesomeIcon icon={faTrash}/>
+				</button>
 			</div>
 		</div>
 	)

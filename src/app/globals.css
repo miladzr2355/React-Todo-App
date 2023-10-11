@@ -26,6 +26,17 @@ h1 {
   font-size: 1.75rem;
 }
 
+.ErrorMessage {
+  color: red;
+}
+
+.SubmitNewTodoBtn {
+  border:none;
+  background-color:transparent;
+  outline:none;
+  color: #fff; 
+}
+
 .TodoInner {
   display: flex;
   align-items: center;

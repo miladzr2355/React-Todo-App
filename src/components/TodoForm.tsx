@@ -39,7 +39,6 @@ const TodoForm: React.FC = () => {
                 value={value}
                 onChange={handleInputValue}
             />
-            
             <button type='submit' className='todo-btn'>Add Todo</button>
         </form>
     )

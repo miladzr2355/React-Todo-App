@@ -6,8 +6,8 @@ import { ITodo } from '../types/types'
 
 interface TodoProps{
     task: ITodo
-	toggleComplete: (todo: ITodo) => void
-	deleteTodo: (todo: ITodo) => void
+	  toggleComplete: (todo: ITodo) => void
+	  deleteTodo: (todo: ITodo) => void
 }
 
 const Todo: React.FC<TodoProps> = ({ task, toggleComplete, deleteTodo }) => {

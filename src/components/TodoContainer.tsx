@@ -1,40 +1,10 @@
 "use client"
-import React, { useState, useEffect } from 'react'
 import TodoForm from './TodoForm'
 import Todo from './Todo'
-import { ITodo } from '../types/types'
-import { db } from '../DataAccess/Firebase'
-import { query, collection, onSnapshot, updateDoc, deleteDoc , doc } from 'firebase/firestore'
+import { useFirebaseTodoList } from '../hooks/useFirebaseTodoList'
 
 const TodoContainer: React.FC = () => {
-
-    const [todos, setTodos] = useState<ITodo[]>([]);
-
-    useEffect(() => {
-        const q = query(collection(db, 'Todos'))
-
-        const unsubsribe = onSnapshot(q, (querySnapshot) => {
-            let todosList: ITodo[] = [];
-
-            querySnapshot.forEach(doc => {
-                todosList.push({id: doc.id, task: doc.data().text, completed: doc.data().completed })
-            });
-
-            setTodos(todosList)
-        })
-
-        return () => unsubsribe();
-    }, [])
-
-    const toggleComplete = async(todo: ITodo) => {
-        await updateDoc(doc(db, 'Todos', todo.id), {
-            completed: !todo.completed
-        })
-    }
-
-    const deleteTodo = async(todo: ITodo) => {
-        await deleteDoc(doc(db, "Todos", todo.id));
-    }
+    const { todos, toggleComplete, deleteTodo, error } = useFirebaseTodoList()
     
     return (
         <div className='TodoWrapper'>
@@ -52,8 +22,10 @@ const TodoContainer: React.FC = () => {
                     />
                 ))
             }
+
+            {error && <div className="ErrorMessage">{error}</div>}
         </div>
     )
 }
 
-export default TodoContainer;
+export default TodoContainer
